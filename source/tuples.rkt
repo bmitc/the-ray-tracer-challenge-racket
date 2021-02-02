@@ -1,6 +1,27 @@
 #lang racket
 
-(provide all-defined-out)
+(provide color
+         vector
+         point
+         vector-sum
+         vector+c
+         vector*c
+         vector/c
+         -vector
+         vector+
+         vector-
+         vector*
+         dot
+         magnitude
+         normalize
+         cross
+         point+c
+         point*c
+         point/c
+         -point
+         point+vector
+         point-vector
+         point-)
 
 (require "utilities.rkt")
 
