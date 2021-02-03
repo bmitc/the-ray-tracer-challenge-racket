@@ -21,7 +21,15 @@
          -point
          point+vector
          point-vector
-         point-)
+         point-
+         color
+         color+c
+         color*c
+         color/c
+         -color
+         color+
+         color-
+         color*)
 
 (require "utilities.rkt")
 
@@ -29,7 +37,7 @@
 ;; Datatypes
 ;;**********************************************************
 
-(struct color (r g b) #:transparent)
+(struct color (red green blue) #:transparent)
 
 (struct vector (i j k) #:transparent)
 
@@ -60,9 +68,9 @@
     [(struct point (x y z)) (point (proc (point-x tuple))
                                    (proc (point-y tuple))
                                    (proc (point-z tuple)))]
-    [(struct color (r g b)) (color (proc (color-r tuple))
-                                   (proc (color-g tuple))
-                                   (proc (color-b tuple)))]))
+    [(struct color (r g b)) (color (proc (color-red tuple))
+                                   (proc (color-green tuple))
+                                   (proc (color-blue tuple)))]))
 
 (define/contract (map-pairwise proc tuple1 tuple2)
   (-> (-> real? real? real?) tuple? tuple? tuple?)
@@ -178,6 +186,32 @@
   (vector (- (point-x p) (point-x q))
           (- (point-y p) (point-y q))
           (- (point-z p) (point-z q))))
+
+
+;;**********************************************************
+;; Color
+;;**********************************************************
+
+(define (color+c color c)
+  (tuple-op-by-constant + color c))
+
+(define (color*c color c)
+  (tuple-op-by-constant * color c))
+
+(define (color/c color c)
+  (tuple-op-by-constant / color c))
+
+(define (-color c)
+  (color*c c -1))
+
+(define (color+ c1 c2 . colors)
+  (apply tuple-op-pairwise + c1 c2 colors))
+
+(define (color- c1 c2 . colors)
+  (apply tuple-op-pairwise - c1 c2 colors))
+
+(define (color* c1 c2 . colors)
+  (apply tuple-op-pairwise * c1 c2 colors))
 
 
 ;;**********************************************************
@@ -321,5 +355,30 @@
               compare-tuple
               (cross b a)
               (vector 1 -2 1))
+
+  (test-equal? "Colors are (red, green, blue) tuples"
+               (let ([c (color -0.5 0.4 1.7)])
+                 (list (color-red c) (color-green c) (color-blue c)))
+               (list -0.5 0.4 1.7))
+
+  (test-check "Adding colors"
+              compare-tuple
+              (color+ (color 0.9 0.6 0.75) (color 0.7 0.1 0.25))
+              (color 1.6 0.7 1.0))
+
+  (test-check "Subtracting colors"
+              compare-tuple
+              (color- (color 0.9 0.6 0.75) (color 0.7 0.1 0.25))
+              (color 0.2 0.5 0.5))
+
+  (test-check "Multiplying a color by a scalar"
+              compare-tuple
+              (color*c (color 0.2 0.3 0.4) 2)
+              (color 0.4 0.6 0.8))
+
+  (test-check "Multiplying colors"
+              compare-tuple
+              (color* (color 1.0 0.2 0.4) (color 0.9 1.0 0.1))
+              (color 0.9 0.2 0.04))
   
   )
