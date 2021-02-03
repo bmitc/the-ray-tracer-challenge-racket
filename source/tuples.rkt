@@ -29,7 +29,12 @@
          -color
          color+
          color-
-         color*)
+         color*
+         black
+         white
+         red
+         green
+         blue)
 
 (require "utilities.rkt")
 
@@ -212,6 +217,12 @@
 
 (define (color* c1 c2 . colors)
   (apply tuple-op-pairwise * c1 c2 colors))
+
+(define black (color 0 0 0))
+(define white (color 1 1 1))
+(define red (color 1 0 0))
+(define green (color 0 1 0))
+(define blue (color 0 0 1))
 
 
 ;;**********************************************************
