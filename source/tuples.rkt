@@ -42,11 +42,11 @@
 ;; Datatypes
 ;;**********************************************************
 
-(struct color (red green blue) #:transparent)
+(struct color  (red green blue) #:transparent)
 
 (struct vector (i j k) #:transparent)
 
-(struct point (x y z) #:transparent)
+(struct point  (x y z) #:transparent)
 
 
 ;;**********************************************************
@@ -61,8 +61,8 @@
   (-> tuple? list?)
   (match tuple
     [(struct vector (i j k)) (list i j k)]
-    [(struct point (x y z)) (list x y z)]
-    [(struct color (r g b)) (list r g b)]))
+    [(struct point  (x y z)) (list x y z)]
+    [(struct color  (r g b)) (list r g b)]))
 
 (define/contract (map-elementwise proc tuple)
   (-> (-> real? real?) tuple? tuple?)
@@ -70,12 +70,12 @@
     [(struct vector (i j k)) (vector (proc (vector-i tuple))
                                      (proc (vector-j tuple))
                                      (proc (vector-k tuple)))]
-    [(struct point (x y z)) (point (proc (point-x tuple))
-                                   (proc (point-y tuple))
-                                   (proc (point-z tuple)))]
-    [(struct color (r g b)) (color (proc (color-red tuple))
-                                   (proc (color-green tuple))
-                                   (proc (color-blue tuple)))]))
+    [(struct point  (x y z)) (point (proc (point-x tuple))
+                                    (proc (point-y tuple))
+                                    (proc (point-z tuple)))]
+    [(struct color  (r g b)) (color (proc (color-red tuple))
+                                    (proc (color-green tuple))
+                                    (proc (color-blue tuple)))]))
 
 (define/contract (map-pairwise proc tuple1 tuple2)
   (-> (-> real? real? real?) tuple? tuple? tuple?)
@@ -220,9 +220,9 @@
 
 (define black (color 0 0 0))
 (define white (color 1 1 1))
-(define red (color 1 0 0))
+(define red   (color 1 0 0))
 (define green (color 0 1 0))
-(define blue (color 0 0 1))
+(define blue  (color 0 0 1))
 
 
 ;;**********************************************************
